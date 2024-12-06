@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        form{
+            width: 100%;
+            margin:1% auto;
+            text-align: center;
+        }
+        input{
+            padding:.5rem;
+            width: 90%;
+            margin-top: .3rem;
+            border-color: rgba(7, 20, 24, 0);
+        }
+        button{
+            display:block;
+            padding:.4rem 1rem;
+            margin:.5rem auto;
+            &:hover{
+                border: none;
+                background-color: rgba(15, 9, 9, 0.945);
+                padding:.5rem 1.1rem;
+                border-radius: .2rem;
+            }
+        }
+        label{
+            font-size: 1.5rem;
+            display: block;
+            margin-top: .3rem;
+            color: rgb(30, 48, 210);
+        }
+        legend{
+            text-align: center;
+            font-size: 2.5rem;
+            color:rgb(2, 61, 10);
+        }
+        fieldset{
+            width: 60%;
+            margin:0 auto 0;
+            border-style: double;
+            box-shadow: 2px 2px 15px rgba(0, 0, 0, 0.356);
+        }
+        #image{
+            border: 2px solid rgb(14, 8, 6);
+        }
+        a{
+            text-decoration: none;
+            font-size: 1.2rem;
+            transition: all 0.5s ease-in-out ;
+            color: green;
+            &:hover{
+                color: rgb(241, 118, 18);
+                letter-spacing: .5rem;
+                font-size: 1.5rem;
+            }
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="">
+        
+    </div>
+    <fieldset><legend>Product Form</legend>
+    <form action="" id="form">
+        <label for="">ID</label><input type="text" id="id" required>
+        <label for="">Image</label><input type="file" id="image" required>
+        <label for="">Product Name</label><input type="text" id="Pname" required>
+        <label for="">Price</label><input type="text" id="price"required>
+        <label for="">Description</label><input type="text" id="description" required>
+        <label for="">rating</label><input type="text" id="rating" required>
+         <button type="submit">Submit</button>
+         <a href="formGet.html">Form Data</a>
+    </form>
+</fieldset>
+<script>
+    function formDataGet(event) {
+        event.preventDefault();
+        let Id = document.getElementById('id').value;
+        let imageInput = document.getElementById('image').files[0]; // Get the file object
+        console.log(imageInput)
+        let pName = document.getElementById('Pname').value;
+        let price = document.getElementById('price').value;
+        let description = document.getElementById('description').value;
+        let rating = document.getElementById('rating').value;
+
+        if (imageInput) {
+            // Use FileReader to convert the image to Base64
+            let reader = new FileReader();
+            reader.onload = function (e) {
+                let imageBase64 = e.target.result; // Base64 string of the image
+                console.log(imageBase64)
+                let formArr = {
+                    id: Number(Id),
+                    image: imageBase64, // Store the Base64 string
+                    Pname: pName,
+                    price: Number(price),
+                    description: description,
+                    rating: rating,
+                };
+
+                 
+
+                let ExistingData = JSON.parse(localStorage.getItem('details')) || [];
+                ExistingData.push(formArr);
+                localStorage.setItem('details', JSON.stringify(ExistingData));
+
+                 
+            };
+            reader.readAsDataURL(imageInput); // Read file as a Base64 Data URL
+        } else {
+            alert("Please upload an image.");
+        }
+    }
+
+    document.getElementById('form').addEventListener('submit', formDataGet);
+</script>
+
+</body>
+</html>
